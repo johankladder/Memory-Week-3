@@ -4,78 +4,77 @@
 
 var speelVeld = [];
 var selected = [];
+var secret = '*';
 
 function initGame(size) {
     initVars(size);
-    vulSpeelveld(size);
+    vulSpeelVeldTable(size);
+    addListeners();
     // Verder aanvullen....
 }
 
 function initVars(size) {
-    initSpeelVeld(size);
-
+    initSpeelVeldArray(size);
 }
 
-function initSpeelVeld(size) {
+function addListeners() {
+    $('#speelveld td').click(clickAction);
+}
+
+function initSpeelVeldArray(size) {
+    getLetter = new nextLetter(size);
+
     speelVeld = new Array(size);
     for (var row = 0; row < size; row++) {
         speelVeld[row] = new Array(size);
-        for (var column = 0; column < size; column++) {
-            speelVeld[row][column] = null;
-        }
-    }
-}
-
-function vulSpeelveld(size) {
-    getLetter = new nextLetter(size);
-
-    for (var row = 0; row < size; row++) {
         for (var column = 0; column < size; column = column + 2) {
             var actualLetter = getLetter();
             speelVeld[row][column] = actualLetter;
             speelVeld[row][column + 1] = actualLetter;
         }
     }
+}
+
+function vulSpeelVeldTable(size) {
+
     // Hier moet de code om het speelveld te vullen met de cellen
     for (var row = 0; row < size; row++) {
         var rowHTML = '<tr>';
         for (var column = 0; column < size; column++) {
             var colHTML = '<td>';
             letter = speelVeld[row][column];
-            colHTML += '*';
+            colHTML += secret;
             colHTML += '</td>';
             rowHTML += colHTML;
         }
         rowHTML += '</tr>';
         $('#speelveld').append(rowHTML);
     }
+}
 
+function clickAction() {
+    column = this.cellIndex;
+    row = this.parentNode.rowIndex;
+    this.innerHTML = speelVeld[row][column];
+    selected.push(this);
 
-    $('#speelveld td').click(function () {
-        column = this.cellIndex;
-        row = this.parentNode.rowIndex;
-        this.innerHTML = speelVeld[row][column];
-        selected.push(this);
-
-        if (selected.length > 1) {
-            if (selected[0].innerHTML === selected[1].innerHTML) {
-                selected = [];
-            } else {
-                time = 2000;
-                var interval = setInterval(function () {
-                    time = time - 1000;
-                    if (time < 0) {
-                        clearInterval(interval);
-                        selected.forEach(function (t) {
-                            t.innerHTML = '*';
-                        });
-                        selected = [];
-                    }
-                }, 1000);
-            }
+    if (selected.length > 1) {
+        if (selected[0].innerHTML === selected[1].innerHTML) {
+            selected = [];
+        } else {
+            time = 2000;
+            var interval = setInterval(function () {
+                time = time - 1000;
+                if (time < 0) {
+                    clearInterval(interval);
+                    selected.forEach(function (t) {
+                        t.innerHTML = secret;
+                    });
+                    selected = [];
+                }
+            }, 1000);
         }
-
-    });
+    }
 }
 
 // TODO rest van de functionaliteit.
