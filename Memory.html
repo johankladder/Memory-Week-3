@@ -14,7 +14,7 @@
   header.span { display:table-cell; }
 
   table#speelveld { table-layout:fixed;   margin:0 auto; }
-  table#speelveld td { cursor:pointer; text-align:center; color:white; font-size:large; font-weight:bold; }  
+  table#speelveld td { cursor:pointer; text-align:center; font-size:large; font-weight:bold; }
 
   table#meta { position:fixed; right:4vw; top:10vw;  width: 25vw; height:70vh; }
   table#meta td { vertical-align:top; text-align:left; padding:1%; }
@@ -61,7 +61,9 @@
 
 <div id="main">
 <div>
-  <table id="speelveld"></table>
+  <table id="speelveld">
+
+  </table>
 
 <table id="meta">
   <tr><td>
@@ -86,7 +88,7 @@
     </td></tr>
     <tr><td>
 	    <button class="jscolor
-	    	{valueElement:'valueinactive', 
+	    	{valueElement:'valueinactive',
 	    	 styleElement:'styleInactive', 
 	    	 onFineChange:'setColor(\'td.inactive\')'}">
 	    Kaartkleur
