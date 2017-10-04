@@ -52,6 +52,14 @@ function vulSpeelVeldTable(size) {
     }
 }
 
+function updateDisplay() {
+    var value = parseInt($('#tijd').text(), 10);
+    value++;
+    $('#tijd').text(value);
+}
+
+setInterval(updateDisplay, 1000); // every second call updateDisplay
+
 function clickAction() {
     column = this.cellIndex;
     row = this.parentNode.rowIndex;
