@@ -17,10 +17,6 @@ function initVars(size) {
     initSpeelVeldArray(size);
 }
 
-function addListeners() {
-    $('#speelveld td').click(clickAction);
-}
-
 function initSpeelVeldArray(size) {
     getLetter = new nextLetter(size);
 
@@ -33,6 +29,7 @@ function initSpeelVeldArray(size) {
             speelVeld[row][column + 1] = actualLetter;
         }
     }
+    // $("#speelveld").css('background-color', '#FF0000');
 }
 
 function vulSpeelVeldTable(size) {
@@ -49,6 +46,7 @@ function vulSpeelVeldTable(size) {
         }
         rowHTML += '</tr>';
         $('#speelveld').append(rowHTML);
+        $("#speelveld td").addClass("inactive")
     }
 }
 
@@ -58,9 +56,17 @@ function updateDisplay() {
     $('#tijd').text(value);
 }
 
-setInterval(updateDisplay, 1000); // every second call updateDisplay
+// setInterval(updateDisplay, 1000); // every second call updateDisplay
+
+function addListeners() {
+    $('#speelveld td').click(clickAction);
+}
 
 function clickAction() {
+    //kleuren worden toegewezen door een class toe te wijzen die in de css de kleur bevat
+    //kleur toewijzen aan de kaarten die actief zijn
+    $(this).removeClass("inactive");
+    $(this).addClass("active");
     column = this.cellIndex;
     row = this.parentNode.rowIndex;
     this.innerHTML = speelVeld[row][column];
@@ -69,14 +75,25 @@ function clickAction() {
     if (selected.length > 1) {
         if (selected[0].innerHTML === selected[1].innerHTML) {
             selected = [];
+            //Kleur toewijzen aan de kaarten die matchen
+            $('.active').each(function () {
+                $(this).addClass('found');
+                $(this).removeClass('active');
+            });
         } else {
             time = 2000;
             var interval = setInterval(function () {
+
                 time = time - 1000;
                 if (time < 0) {
                     clearInterval(interval);
                     selected.forEach(function (t) {
                         t.innerHTML = secret;
+                        //Kleur terug zetten naar inactief
+                        $('.active').each(function () {
+                            $(this).addClass('inactive');
+                            $(this).removeClass('active');
+                        });
                     });
                     selected = [];
                 }
@@ -103,6 +120,7 @@ function setColor(stylesheetId) {
     var valueLocation = '#value' + stylesheetId.substring(3);
     console.log(valueLocation);
     var color = $(valueLocation).val();
+    console.log(color);
     $(stylesheetId).css('background-color', '#' + color);
 }
 
@@ -125,6 +143,7 @@ function shuffle(array) {
 
 $(document).ready(function () {
     $("#opnieuw").click(function () {
+        $("#speelveld").empty();
         initGame($("#size").val());
     });
 });
