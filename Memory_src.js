@@ -159,6 +159,7 @@ function shuffle(array) {
 
 $(document).ready(function () {
     $("#opnieuw").click(function () {
+        //speelveld wordt eerst leeggehaald, voordat een nieuwe gestart wordt.
         $("#speelveld").empty();
         initGame($("#size").val());
     });
