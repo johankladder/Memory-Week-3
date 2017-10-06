@@ -46,7 +46,10 @@ function vulSpeelVeldTable(size) {
         }
         rowHTML += '</tr>';
         $('#speelveld').append(rowHTML);
-        $("#speelveld td").addClass("inactive")
+        // $("#speelveld td").addClass("inactive")
+        $('#speelveld td').each(function () {
+            $(this).addClass('inactive');
+        });
     }
 }
 
@@ -79,7 +82,11 @@ function clickAction() {
             $('.active').each(function () {
                 $(this).addClass('found');
                 $(this).removeClass('active');
+                
             });
+            //Hier wordt gecheckt of alle kaarten gevonden zijn
+            checkWin();
+            
         } else {
             time = 2000;
             var interval = setInterval(function () {
@@ -96,9 +103,18 @@ function clickAction() {
                         });
                     });
                     selected = [];
+                    // 
                 }
+                // 
             }, 1000);
         }
+    }
+}
+
+//Functie die checkt of het spel klaar is
+function checkWin(){
+    if($('.inactive').length === 0){
+        alert("Gefeliciteerd, je hebt ze allemaal gevonden!")
     }
 }
 
