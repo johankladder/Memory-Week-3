@@ -59,7 +59,11 @@ function updateDisplay() {
     $('#tijd').text(value);
 }
 
-// setInterval(updateDisplay, 1000); // every second call updateDisplay
+// werkt nog niet....
+setInterval($("#speelveld td").click(function () {
+    updateDisplay();
+}), 1000);
+
 
 function addListeners() {
     $('#speelveld td').click(clickAction);
@@ -76,17 +80,18 @@ function clickAction() {
     selected.push(this);
 
     if (selected.length > 1) {
+
         if (selected[0].innerHTML === selected[1].innerHTML) {
             selected = [];
             //Kleur toewijzen aan de kaarten die matchen
             $('.active').each(function () {
                 $(this).addClass('found');
                 $(this).removeClass('active');
-                
+
             });
             //Hier wordt gecheckt of alle kaarten gevonden zijn
             checkWin();
-            
+
         } else {
             time = 2000;
             var interval = setInterval(function () {
@@ -112,8 +117,8 @@ function clickAction() {
 }
 
 //Functie die checkt of het spel klaar is
-function checkWin(){
-    if($('.inactive').length === 0){
+function checkWin() {
+    if ($('.inactive').length === 0) {
         alert("Gefeliciteerd, je hebt ze allemaal gevonden!")
     }
 }
